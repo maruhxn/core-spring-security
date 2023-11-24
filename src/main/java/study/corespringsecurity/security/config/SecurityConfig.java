@@ -11,16 +11,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
-    private AuthenticationDetailsSource authenticationDetailsSource;
+    private AuthenticationDetailsSource formWebAuthenticationDetailsSource;
 
     @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
+    private AuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler customAuthenticationFailureHandler;
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -32,7 +39,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authz ->
                         authz
-                                .requestMatchers("/", "/users").permitAll()
+                                .requestMatchers("/", "/users", "/login*").permitAll()
                                 .requestMatchers("/mypage").hasRole("USER")
                                 .requestMatchers("/messages").hasRole("MANAGER")
                                 .requestMatchers("/config").hasRole("ADMIN")
@@ -42,8 +49,9 @@ public class SecurityConfig {
                                 .loginPage("/login")
                                 .defaultSuccessUrl("/")
                                 .loginProcessingUrl("/login_proc")
-                                .authenticationDetailsSource(authenticationDetailsSource)
-                                .successHandler(authenticationSuccessHandler)
+                                .authenticationDetailsSource(formWebAuthenticationDetailsSource)
+                                .successHandler(customAuthenticationSuccessHandler)
+                                .failureHandler(customAuthenticationFailureHandler)
                                 .permitAll());
         return http.build();
     }
