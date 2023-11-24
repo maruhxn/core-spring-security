@@ -19,3 +19,7 @@ spring:
       enabled: true
   main:
     allow-bean-definition-overriding: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
