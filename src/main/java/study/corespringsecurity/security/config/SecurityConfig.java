@@ -27,7 +27,8 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationFailureHandler customAuthenticationFailureHandler;
 
-
+    @Autowired
+    private AccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -52,7 +53,10 @@ public class SecurityConfig {
                                 .authenticationDetailsSource(formWebAuthenticationDetailsSource)
                                 .successHandler(customAuthenticationSuccessHandler)
                                 .failureHandler(customAuthenticationFailureHandler)
-                                .permitAll());
+                                .permitAll())
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                                .accessDeniedHandler(customAccessDeniedHandler));
         return http.build();
     }
 
