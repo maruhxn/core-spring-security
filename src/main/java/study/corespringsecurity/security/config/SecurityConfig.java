@@ -56,7 +56,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authz ->
                         authz
-                                .requestMatchers("/").permitAll()
+                                .requestMatchers("/", "/users").permitAll()
                                 .requestMatchers("/mypage").hasRole("USER")
                                 .requestMatchers("/messages").hasRole("MANAGER")
                                 .requestMatchers("/config").hasRole("ADMIN")
