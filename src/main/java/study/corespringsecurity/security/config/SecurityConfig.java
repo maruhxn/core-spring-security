@@ -1,8 +1,10 @@
 package study.corespringsecurity.security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -13,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Autowired
+    private AuthenticationDetailsSource authenticationDetailsSource;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -34,6 +38,7 @@ public class SecurityConfig {
                                 .loginPage("/login")
                                 .defaultSuccessUrl("/")
                                 .loginProcessingUrl("/login_proc")
+                                .authenticationDetailsSource(authenticationDetailsSource)
                                 .permitAll());
         return http.build();
     }
