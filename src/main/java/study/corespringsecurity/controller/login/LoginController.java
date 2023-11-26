@@ -10,12 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import study.corespringsecurity.domain.Account;
+import study.corespringsecurity.domain.entity.Account;
 
 @Controller
 public class LoginController {
 
-    @GetMapping("/login")
+    @GetMapping({"/login", "/api/login"})
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "exception", required = false) String exception,
                         Model model) {
@@ -37,7 +37,7 @@ public class LoginController {
         return "redirect:/login";
     }
 
-    @GetMapping("/denied")
+    @GetMapping({"/denied", "/api/denied"})
     public String accessDenied(
             @RequestParam(value = "exception", required = false) String exception,
             @AuthenticationPrincipal Account account,

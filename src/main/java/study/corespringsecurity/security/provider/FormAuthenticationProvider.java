@@ -50,6 +50,6 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
 
     @Override // 지원 여부 확인을 위한 구현
     public boolean supports(Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 }
